@@ -11,12 +11,12 @@ let flashcards = [
     answer: "Hypertext Markup Language"
   },
   {
-    id: 1,
+    id: 2,
     question: "What does CSS stand for?",
     answer: "Cascading Style Sheets"
   },
   {
-    id: 1,
+    id: 3,
     question: "Some other question?",
     answer: "Some other answer"
   }
@@ -28,12 +28,11 @@ app.get("/api/flashcards", (req, res) => {
   res.json(flashcards);
 });
 
-app.post("/addFlashcard", (req, res) => {
+app.post("/api/addFlashcard", (req, res) => {
   const newFlashcard = req.body.addFlashcard;
   console.log(newFlashcard);
-  flashcards.push({ newFlashcard });
-  //   res.redirect("/api/flashcards");
-  res.send(newFlashcard);
+  flashcards.push({ question: newFlashcard });
+  res.redirect("/api/flashcards");
 });
 
 app.listen(port, err => {

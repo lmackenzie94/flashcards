@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../App.css";
+import Form from "../Form/Form";
 
 class Flashcards extends Component {
   constructor() {
@@ -28,14 +29,7 @@ class Flashcards extends Component {
             </li>
           ))}
         </ul>
-        <form action="/addFlashcard" method="POST">
-          <input
-            type="text"
-            name="newFlashcard"
-            placeholder="Enter a question..."
-          />
-          <button>Add Card!</button>
-        </form>
+        <Form />
       </div>
     );
   }
