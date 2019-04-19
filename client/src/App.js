@@ -1,0 +1,15 @@
+import React, { Component } from "react";
+import "./App.css";
+import Flashcards from "./Components/Flashcards/Flashcards";
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Flashcards />
+      </div>
+    );
+  }
+}
+
+export default App;

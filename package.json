@@ -1,0 +1,30 @@
+{
+  "name": "flashcards",
+  "version": "1.0.0",
+  "description": "Simple flashcards app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmackenzie94/flashcards.git"
+  },
+  "author": "Luke MacKenzie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lmackenzie94/flashcards/issues"
+  },
+  "homepage": "https://github.com/lmackenzie94/flashcards#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "react-router-dom": "^5.0.0"
+  }
+}
