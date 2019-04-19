@@ -29,9 +29,12 @@ app.get("/api/flashcards", (req, res) => {
 });
 
 app.post("/api/addFlashcard", (req, res) => {
-  const newFlashcard = req.body.addFlashcard;
-  console.log(newFlashcard);
-  flashcards.push({ question: newFlashcard });
+  const newFlashcardQuestion = req.body.addQuestion;
+  const newFlashcardAnswer = req.body.addAnswer;
+  flashcards.push({
+    question: newFlashcardQuestion,
+    answer: newFlashcardAnswer
+  });
   res.redirect("/api/flashcards");
 });
 

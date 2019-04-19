@@ -6,8 +6,15 @@ const Form = () => {
     <form action="/api/addFlashcard" method="POST">
       <input
         type="text"
-        name="addFlashcard"
+        name="addQuestion"
         placeholder="Enter a question..."
+        required
+      />
+      <input
+        type="text"
+        name="addAnswer"
+        placeholder="Enter the answer..."
+        required
       />
       <button>Add Card!</button>
     </form>
