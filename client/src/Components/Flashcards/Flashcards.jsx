@@ -3,12 +3,9 @@ import "../../App.css";
 import Form from "../Form/Form";
 
 class Flashcards extends Component {
-  constructor() {
-    super();
-    this.state = {
-      flashcards: []
-    };
-  }
+  state = {
+    flashcards: []
+  };
 
   componentDidMount() {
     fetch("/api/flashcards") // dont have to specify localhost becuase of the proxy we added in package.json
