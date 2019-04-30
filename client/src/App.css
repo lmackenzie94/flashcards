@@ -355,7 +355,7 @@ nav {
 /* CARD STYLES */
 
 .card {
-  border: 1px solid black;
+  border: 2px solid black;
   padding: 15px;
   width: calc(100% / 2 - 40px);
   text-align: center;
@@ -369,8 +369,8 @@ button.close {
   border: none;
   background: none;
   position: absolute;
-  top: 10px;
-  right: 15px;
+  top: 5px;
+  right: 10px;
   font-size: 1.5rem;
   color: #6a8d73;
 }
@@ -391,6 +391,12 @@ form {
   align-items: center;
   width: 50%;
   margin: 20px auto;
+}
+
+/* prevents outline around input after form submission */
+*:required {
+  border: none;
+  box-shadow: none;
 }
 
 form input[type="text"] {

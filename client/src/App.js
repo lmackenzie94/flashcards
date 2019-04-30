@@ -27,15 +27,24 @@ class App extends Component {
 
   postToDatabase = () => {
     let { newQuestion, newAnswer, newCardTopic } = this.state;
-    axios.post("/api/cards", {
-      question: newQuestion,
-      answer: newAnswer,
-      topic: newCardTopic
-    });
+    axios
+      .post("/api/cards", {
+        question: newQuestion,
+        answer: newAnswer,
+        topic: newCardTopic
+      })
+      .then(() => {
+        this.getFromDatabase();
+        this.setState({
+          newQuestion: "",
+          newAnswer: "",
+          newCardTopic: "HTML"
+        });
+      });
   };
 
   deleteFromDatabase = id => {
-    axios.delete(`/api/cards/${id}`);
+    axios.delete(`/api/cards/${id}`).then(() => this.getFromDatabase());
   };
 
   handleFormChange = e => {
@@ -47,11 +56,6 @@ class App extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     this.postToDatabase();
-    this.setState({
-      newQuestion: "",
-      newAnswer: "",
-      newCardTopic: "HTML"
-    });
   };
 
   toggleAnswerReveal = id => {
