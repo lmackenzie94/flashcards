@@ -7,7 +7,6 @@ const Card = require("../../models/Card");
 // @desc Get ALL Cards
 // @access Public
 
-// the '/' below actually refers to the route api/cards because of how our server.js file is set up
 router.get("/", (req, res) => {
   Card.find().then(cards => res.json(cards));
 });
@@ -23,7 +22,10 @@ router.post("/", (req, res) => {
     answer: req.body.answer,
     topic: req.body.topic
   });
-  newCard.save().then(card => res.json(card)); //save to database
+  newCard
+    .save()
+    .then(card => res.json(card))
+    .catch(err => console.log(`Oops, something went wrong: ${err}`)); //save to database
 });
 
 // @route DELETE api/cards/:id
