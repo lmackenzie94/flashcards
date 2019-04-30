@@ -11,7 +11,7 @@ const Form = props => {
   } = props;
 
   return (
-    <div className="wrapper">
+    <div>
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"

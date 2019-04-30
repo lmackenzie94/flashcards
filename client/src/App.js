@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./App.css";
-import Form from "./Components/Form/Form";
-import Flashcards from "./Components/Flashcards/Flashcards";
+// import Flashcard from "./Components/Card/Flashcard";
+import Card from "./Components/Card/Card";
+import Modal from "./Components/Modal/Modal";
 import Navbar from "./Components/Navbar/Navbar";
 
 class App extends Component {
   state = {
     flashcards: [],
     newCardTopic: "HTML",
-    answerIsVisible: false
+    answerIsVisible: false,
+    modalIsOpen: false
   };
 
   componentDidMount() {
@@ -91,47 +93,66 @@ class App extends Component {
     });
   };
 
+  toggleModal = () => {
+    this.setState({
+      modalIsOpen: !this.state.modalIsOpen
+    });
+  };
+
   render() {
     const {
       flashcards,
       newQuestion,
       newAnswer,
       newCardTopic,
-      currentCardIndex
+      currentCard,
+      currentCardIndex,
+      answerIsVisible,
+      modalIsOpen
     } = this.state;
 
     return (
       <div className="App">
-        <Navbar />
-        <button onClick={this.previousCard} disabled={currentCardIndex <= 0}>
-          Previous card
-        </button>
-        <button
-          onClick={this.nextCard}
-          disabled={currentCardIndex === flashcards.length - 1}
-        >
-          Next card
-        </button>
-        <Flashcards
-          flashcards={flashcards}
-          answerIsVisible={this.state.answerIsVisible}
+        <header>
+          <Navbar toggleModal={this.toggleModal} />
+          {modalIsOpen && (
+            <Modal
+              handleFormChange={this.handleFormChange}
+              handleFormSubmit={this.handleFormSubmit}
+              toggleModal={this.toggleModal}
+              newQuestion={newQuestion}
+              newAnswer={newAnswer}
+              newCardTopic={newCardTopic}
+            />
+          )}
+          <button onClick={this.previousCard} disabled={currentCardIndex <= 0}>
+            Previous card
+          </button>
+          <button
+            onClick={this.nextCard}
+            disabled={currentCardIndex === flashcards.length - 1}
+          >
+            Next card
+          </button>
+        </header>
+        <div className="cardSlider">
+          <div className="cardContainer">
+            {flashcards.map(flashcard => (
+              <Card
+                key={flashcard._id}
+                flashcard={flashcard}
+                answerIsVisible={answerIsVisible}
+                toggleAnswerReveal={this.toggleAnswerReveal}
+                deleteFromDatabase={this.deleteFromDatabase}
+              />
+            ))}
+          </div>
+        </div>
+        {/* <Flashcard 
+          currentCard={currentCard}
+          answerIsVisible={answerIsVisible}
           handleAnswerReveal={this.toggleAnswerReveal}
           deleteFromDatabase={this.deleteFromDatabase}
-        />
-        <Form
-          handleFormChange={this.handleFormChange}
-          handleFormSubmit={this.handleFormSubmit}
-          newQuestion={newQuestion}
-          newAnswer={newAnswer}
-          newCardTopic={newCardTopic}
-        />
-        {/* <Card
-          id={flashcard._id}
-          question={flashcard.question}
-          answer={flashcard.answer}
-          answerIsVisible={props.answerIsVisible}
-          handleAnswerReveal={props.handleAnswerReveal}
-          deleteFromDatabase={props.deleteFromDatabase}
         /> */}
       </div>
     );
