@@ -20,7 +20,11 @@ class App extends Component {
     fetch("/api/cards") // dont have to specify localhost becuase of the proxy we added in package.json
       .then(res => res.json())
       .then(flashcards => {
-        this.setState({ flashcards });
+        this.setState({
+          flashcards,
+          currentCard: flashcards[0],
+          currentCardIndex: 0
+        });
       })
       .catch(err => console.log(`Oops, something went wrong: ${err}`));
   };
@@ -64,15 +68,50 @@ class App extends Component {
     });
   };
 
-  render() {
-    const { flashcards, newQuestion, newAnswer, newCardTopic } = this.state;
+  nextCard = () => {
+    const { currentCardIndex, flashcards } = this.state;
+    if (currentCardIndex === flashcards.length - 1) {
+      return;
+    }
+    this.setState({
+      currentCard: flashcards[currentCardIndex + 1],
+      currentCardIndex: currentCardIndex + 1
+    });
+  };
 
-    // let randomCard =
-    //   props.flashcards[Math.floor(Math.random() * props.flashcards.length)];
+  previousCard = () => {
+    const { currentCardIndex, flashcards } = this.state;
+
+    if (currentCardIndex <= 0) {
+      return;
+    }
+    this.setState({
+      currentCard: flashcards[currentCardIndex - 1],
+      currentCardIndex: currentCardIndex - 1
+    });
+  };
+
+  render() {
+    const {
+      flashcards,
+      newQuestion,
+      newAnswer,
+      newCardTopic,
+      currentCardIndex
+    } = this.state;
 
     return (
       <div className="App">
         <Navbar />
+        <button onClick={this.previousCard} disabled={currentCardIndex <= 0}>
+          Previous card
+        </button>
+        <button
+          onClick={this.nextCard}
+          disabled={currentCardIndex === flashcards.length - 1}
+        >
+          Next card
+        </button>
         <Flashcards
           flashcards={flashcards}
           answerIsVisible={this.state.answerIsVisible}
