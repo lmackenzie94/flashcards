@@ -23,7 +23,7 @@ class App extends Component {
       .then(res => res.json())
       .then(flashcards => {
         this.setState({
-          flashcards,
+          flashcards: flashcards,
           currentCard: flashcards[0],
           currentCardIndex: 0
         });
@@ -77,7 +77,8 @@ class App extends Component {
     }
     this.setState({
       currentCard: flashcards[currentCardIndex + 1],
-      currentCardIndex: currentCardIndex + 1
+      currentCardIndex: currentCardIndex + 1,
+      answerIsVisible: false
     });
   };
 
@@ -89,7 +90,8 @@ class App extends Component {
     }
     this.setState({
       currentCard: flashcards[currentCardIndex - 1],
-      currentCardIndex: currentCardIndex - 1
+      currentCardIndex: currentCardIndex - 1,
+      answerIsVisible: false
     });
   };
 
@@ -135,19 +137,22 @@ class App extends Component {
             Next card
           </button>
         </header>
-        <div className="cardSlider">
-          <div className="cardContainer">
-            {flashcards.map(flashcard => (
-              <Card
-                key={flashcard._id}
-                flashcard={flashcard}
-                answerIsVisible={answerIsVisible}
-                toggleAnswerReveal={this.toggleAnswerReveal}
-                deleteFromDatabase={this.deleteFromDatabase}
-              />
-            ))}
-          </div>
-        </div>
+
+        {flashcards.map(
+          flashcard => (
+            // currentCard._id === flashcard._id ? (
+            <Card
+              key={flashcard._id}
+              flashcard={flashcard}
+              answerIsVisible={answerIsVisible}
+              toggleAnswerReveal={this.toggleAnswerReveal}
+              deleteFromDatabase={this.deleteFromDatabase}
+            />
+          )
+
+          // ) : null
+        )}
+
         {/* <Flashcard 
           currentCard={currentCard}
           answerIsVisible={answerIsVisible}
