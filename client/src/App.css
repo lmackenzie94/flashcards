@@ -201,17 +201,9 @@ header {
 
 /* CARD STYLES */
 
-.cardSlider {
-  max-width: 100vw;
-  overflow-x: scroll;
-  /* border: 1px solid red; */
-}
-
 .cardContainer {
-  /* border: 1px solid black; */
   display: flex;
-  max-width: 300px;
-  margin: 0 auto;
+  justify-content: center;
 }
 
 .card {
@@ -225,8 +217,62 @@ header {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  flex: 1 0 260px;
+  flex: 0 1 450px;
   min-height: 300px;
+}
+
+.card:before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #f3f8e5;
+  position: absolute;
+  top: 3px;
+  right: -6px;
+  z-index: -1;
+  border: 2px solid black;
+}
+
+.card:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #f3f8e5;
+  position: absolute;
+  top: 8px;
+  right: -10px;
+  z-index: -2;
+  border: 2px solid black;
+}
+
+.topic {
+  position: absolute;
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 10px;
+  line-height: 1;
+  top: 10px;
+  left: 10px;
+  text-align: center;
+}
+
+/* topic flag colours */
+.html {
+  background: lightskyblue;
+}
+.css {
+  background: lightgreen;
+}
+.javascript {
+  background: lightpink;
+}
+
+.blur {
+  text-shadow: 0 0 8px #000;
+  color: transparent;
 }
 
 button.close {

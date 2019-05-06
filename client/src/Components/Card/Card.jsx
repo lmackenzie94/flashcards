@@ -1,7 +1,7 @@
 import React from "react";
 
 const Card = props => {
-  const { _id, question, answer } = props.flashcard;
+  const { _id, question, answer, topic } = props.flashcard;
   const { answerIsVisible, deleteFromDatabase, toggleAnswerReveal } = props;
 
   return (
@@ -9,9 +9,10 @@ const Card = props => {
       <button className="close" onClick={() => deleteFromDatabase(_id)}>
         &times;
       </button>
+      <span className={`topic ${topic.toLowerCase()}`}>{topic}</span>
       <p style={{ fontWeight: "Bold" }}>{question}</p>
 
-      {answerIsVisible ? <p>{answer}</p> : null}
+      {answerIsVisible ? <p>{answer}</p> : <p className="blur">{answer}</p>}
 
       {answerIsVisible ? (
         <button

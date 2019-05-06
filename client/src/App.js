@@ -62,9 +62,10 @@ class App extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     this.postToDatabase();
+    this.toggleModal();
   };
 
-  toggleAnswerReveal = id => {
+  toggleAnswerReveal = () => {
     this.setState({
       answerIsVisible: !this.state.answerIsVisible
     });
@@ -94,9 +95,9 @@ class App extends Component {
   };
 
   toggleModal = () => {
-    this.setState({
-      modalIsOpen: !this.state.modalIsOpen
-    });
+    this.setState(prevState => ({
+      modalIsOpen: !prevState.modalIsOpen
+    }));
   };
 
   render() {
@@ -125,28 +126,34 @@ class App extends Component {
               newCardTopic={newCardTopic}
             />
           )}
-          <button onClick={this.previousCard} disabled={currentCardIndex <= 0}>
+          <button
+            onClick={this.previousCard}
+            disabled={currentCardIndex <= 0}
+            className="changeCard"
+          >
             Previous card
           </button>
           <button
             onClick={this.nextCard}
             disabled={currentCardIndex === flashcards.length - 1}
+            className="changeCard"
           >
             Next card
           </button>
         </header>
-        <div className="cardSlider">
-          <div className="cardContainer">
-            {flashcards.map(flashcard => (
-              <Card
-                key={flashcard._id}
-                flashcard={flashcard}
-                answerIsVisible={answerIsVisible}
-                toggleAnswerReveal={this.toggleAnswerReveal}
-                deleteFromDatabase={this.deleteFromDatabase}
-              />
-            ))}
-          </div>
+        <div className="cardContainer">
+          {flashcards.map(
+            flashcard =>
+              currentCard._id === flashcard._id && (
+                <Card
+                  key={flashcard._id}
+                  flashcard={flashcard}
+                  answerIsVisible={answerIsVisible}
+                  toggleAnswerReveal={this.toggleAnswerReveal}
+                  deleteFromDatabase={this.deleteFromDatabase}
+                />
+              )
+          )}
         </div>
         {/* <Flashcard 
           currentCard={currentCard}
