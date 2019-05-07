@@ -1,17 +1,20 @@
 import React from "react";
+import { useSpring, animated } from "react-spring";
 
 const Card = props => {
-  const { _id, question, answer } = props.flashcard;
+  const { _id, question, answer, topic } = props.flashcard;
   const { answerIsVisible, deleteFromDatabase, toggleAnswerReveal } = props;
+  const cardTransition = useSpring({ opacity: 1, from: { opacity: 0 } });
 
   return (
-    <div key={_id} className="card">
+    <animated.div key={_id} className="card" style={cardTransition}>
       <button className="close" onClick={() => deleteFromDatabase(_id)}>
         &times;
       </button>
+      <span className={`topic ${topic.toLowerCase()}`}>{topic}</span>
       <p style={{ fontWeight: "Bold" }}>{question}</p>
 
-      {answerIsVisible ? <p>{answer}</p> : null}
+      {answerIsVisible ? <p>{answer}</p> : <p className="blur">{answer}</p>}
 
       {answerIsVisible ? (
         <button
@@ -28,7 +31,7 @@ const Card = props => {
           Reveal Answer
         </button>
       )}
-    </div>
+    </animated.div>
   );
 };
 export default Card;

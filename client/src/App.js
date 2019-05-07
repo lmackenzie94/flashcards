@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./App.css";
-// import Flashcard from "./Components/Card/Flashcard";
 import Card from "./Components/Card/Card";
 import Modal from "./Components/Modal/Modal";
-import Navbar from "./Components/Navbar/Navbar";
 
 class App extends Component {
   state = {
@@ -62,9 +60,10 @@ class App extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     this.postToDatabase();
+    this.toggleModal();
   };
 
-  toggleAnswerReveal = id => {
+  toggleAnswerReveal = () => {
     this.setState({
       answerIsVisible: !this.state.answerIsVisible
     });
@@ -96,9 +95,9 @@ class App extends Component {
   };
 
   toggleModal = () => {
-    this.setState({
-      modalIsOpen: !this.state.modalIsOpen
-    });
+    this.setState(prevState => ({
+      modalIsOpen: !prevState.modalIsOpen
+    }));
   };
 
   render() {
@@ -116,7 +115,7 @@ class App extends Component {
     return (
       <div className="App">
         <header>
-          <Navbar toggleModal={this.toggleModal} />
+          <h1>Flashcards</h1>
           {modalIsOpen && (
             <Modal
               handleFormChange={this.handleFormChange}
@@ -127,38 +126,42 @@ class App extends Component {
               newCardTopic={newCardTopic}
             />
           )}
-          <button onClick={this.previousCard} disabled={currentCardIndex <= 0}>
-            Previous card
-          </button>
-          <button
-            onClick={this.nextCard}
-            disabled={currentCardIndex === flashcards.length - 1}
-          >
-            Next card
-          </button>
+          <div className="buttonContainer">
+            <button
+              onClick={this.previousCard}
+              disabled={currentCardIndex <= 0}
+              className="changeCard"
+            >
+              Previous card
+            </button>
+            <button
+              onClick={this.nextCard}
+              disabled={currentCardIndex === flashcards.length - 1}
+              className="changeCard"
+            >
+              Next card
+            </button>
+          </div>
         </header>
-
-        {flashcards.map(
-          flashcard => (
-            // currentCard._id === flashcard._id ? (
-            <Card
-              key={flashcard._id}
-              flashcard={flashcard}
-              answerIsVisible={answerIsVisible}
-              toggleAnswerReveal={this.toggleAnswerReveal}
-              deleteFromDatabase={this.deleteFromDatabase}
-            />
-          )
-
-          // ) : null
+        <main className="cardContainer">
+          {flashcards.map(
+            flashcard =>
+              currentCard._id === flashcard._id && (
+                <Card
+                  key={flashcard._id}
+                  flashcard={flashcard}
+                  answerIsVisible={answerIsVisible}
+                  toggleAnswerReveal={this.toggleAnswerReveal}
+                  deleteFromDatabase={this.deleteFromDatabase}
+                />
+              )
+          )}
+        </main>
+        {flashcards.length !== 0 && (
+          <button className="openModal" onClick={this.toggleModal}>
+            Add Card
+          </button>
         )}
-
-        {/* <Flashcard 
-          currentCard={currentCard}
-          answerIsVisible={answerIsVisible}
-          handleAnswerReveal={this.toggleAnswerReveal}
-          deleteFromDatabase={this.deleteFromDatabase}
-        /> */}
       </div>
     );
   }
