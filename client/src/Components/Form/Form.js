@@ -2,13 +2,7 @@ import React from "react";
 import "../../App.css";
 
 const Form = props => {
-  const {
-    handleFormChange,
-    handleFormSubmit,
-    newQuestion,
-    newAnswer,
-    newCardTopic
-  } = props;
+  const { handleFormChange, handleFormSubmit } = props;
 
   return (
     <div>
@@ -18,7 +12,6 @@ const Form = props => {
           name="newQuestion"
           placeholder="Enter a question..."
           onChange={handleFormChange}
-          value={newQuestion}
           required
         />
         <input
@@ -26,15 +19,9 @@ const Form = props => {
           name="newAnswer"
           placeholder="Enter the answer..."
           onChange={handleFormChange}
-          value={newAnswer}
           required
         />
-        <select
-          required
-          name="newCardTopic"
-          value={newCardTopic}
-          onChange={handleFormChange}
-        >
+        <select required name="newCardTopic" onChange={handleFormChange}>
           <option value="HTML" defaultValue>
             HTML
           </option>

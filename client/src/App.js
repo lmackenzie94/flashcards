@@ -1,187 +1,143 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 import Card from "./Components/Card/Card";
-import Modal from "./Components/Modal/Modal";
+import Form from "./Components/Form/Form";
+import Filter from "./Components/Filter/Filter";
+import Button from "./Components/Button/Button";
 
-class App extends Component {
-  state = {
-    flashcards: [],
-    newCardTopic: "HTML",
-    answerIsVisible: false,
-    modalIsOpen: false
-  };
+const App = props => {
+  const [cards, setCards] = useState([]);
+  const [newCard, setNewCard] = useState({
+    newQuestion: "",
+    newAnswer: "",
+    newTopic: "HTML"
+  });
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [visibleCardIndex, setVisibleCardIndex] = useState(0);
+  // const [filter, setFilter] = useState(undefined);
 
-  componentDidMount() {
-    this.getFromDatabase();
-  }
+  useEffect(() => {
+    getFromDatabase();
+  }, []);
 
-  getFromDatabase = () => {
+  const getFromDatabase = () => {
     fetch("/api/cards") // dont have to specify localhost becuase of the proxy we added in package.json
       .then(res => res.json())
-      .then(flashcards => {
-        this.setState({
-          flashcards: flashcards,
-          currentCard: flashcards[0],
-          currentCardIndex: 0
-        });
+      .then(cards => {
+        const reversedCards = cards.reverse(); // so more recently added cards appear first
+        setCards(reversedCards);
       })
       .catch(err => console.log(`Oops, something went wrong: ${err}`));
   };
 
-  postToDatabase = () => {
-    let { newQuestion, newAnswer, newCardTopic } = this.state;
+  const postToDatabase = () => {
+    let { newQuestion, newAnswer, newTopic } = newCard;
     axios
       .post("/api/cards", {
         question: newQuestion,
         answer: newAnswer,
-        topic: newCardTopic
+        topic: newTopic
       })
       .then(() => {
-        this.getFromDatabase();
-        this.setState({
+        getFromDatabase();
+        setNewCard({
           newQuestion: "",
           newAnswer: "",
-          newCardTopic: "HTML"
+          newTopic: "HTML"
         });
+        setVisibleCardIndex(0); //so that the new card is the one that's visible
       });
   };
 
-  deleteFromDatabase = id => {
-    axios.delete(`/api/cards/${id}`).then(() => this.getFromDatabase());
+  const deleteFromDatabase = id => {
+    axios.delete(`/api/cards/${id}`).then(() => getFromDatabase());
   };
 
-  handleFormChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
+  const handleFormChange = e => {
+    let currentInput = e.target.name;
+    setNewCard({
+      ...newCard,
+      [currentInput]: e.target.value
     });
   };
 
-  handleFormSubmit = e => {
+  const handleFormSubmit = e => {
     e.preventDefault();
-    this.postToDatabase();
-    this.toggleModal();
+    postToDatabase();
+    toggleModal();
   };
 
-  toggleAnswerReveal = () => {
-    this.setState({
-      answerIsVisible: !this.state.answerIsVisible
-    });
+  const toggleModal = () => {
+    setModalIsOpen(!modalIsOpen);
   };
 
-  nextCard = () => {
-    const { currentCardIndex, flashcards } = this.state;
-    if (currentCardIndex === flashcards.length - 1) {
-      return;
-    }
-    this.setState({
-      currentCard: flashcards[currentCardIndex + 1],
-      currentCardIndex: currentCardIndex + 1,
-      answerIsVisible: false
-    });
-  };
-
-  previousCard = () => {
-    const { currentCardIndex, flashcards } = this.state;
-
-    if (currentCardIndex <= 0) {
-      return;
-    }
-    this.setState({
-      currentCard: flashcards[currentCardIndex - 1],
-      currentCardIndex: currentCardIndex - 1,
-      answerIsVisible: false
-    });
-  };
-
-  toggleModal = () => {
-    this.setState(prevState => ({
-      modalIsOpen: !prevState.modalIsOpen
-    }));
-  };
-
-  // handleFilter = topic => {
-  //   const newState = this.state.flashcards.filter(
-  //     flashcard => flashcard.topic === topic
-  //   );
-  //   this.setState({ flashcards: newState });
+  // const handleArrowKeys = e => {
+  //   let keyPressed = e.key;
   // };
 
-  render() {
-    const {
-      flashcards,
-      newQuestion,
-      newAnswer,
-      newCardTopic,
-      currentCard,
-      currentCardIndex,
-      answerIsVisible,
-      modalIsOpen,
-      currentFilter
-    } = this.state;
+  const nextCard = () => {
+    let currentCard = visibleCardIndex;
+    setVisibleCardIndex(currentCard + 1);
+  };
 
-    return (
-      <div className="App">
-        <header>
-          <h1>Flashcards</h1>
-          <select
-            onChange={this.handleFormChange}
-            name="currentFilter"
-            value={currentFilter}
-          >
-            <option value="HTML">HTML</option>
-            <option value="CSS">CSS</option>
-            <option value="JavaScript">JavaScript</option>
-          </select>
-          {modalIsOpen && (
-            <Modal
-              handleFormChange={this.handleFormChange}
-              handleFormSubmit={this.handleFormSubmit}
-              toggleModal={this.toggleModal}
-              newQuestion={newQuestion}
-              newAnswer={newAnswer}
-              newCardTopic={newCardTopic}
-            />
-          )}
-          <div className="buttonContainer">
-            <button
-              onClick={this.previousCard}
-              disabled={currentCardIndex <= 0}
-              className="changeCard"
-            >
-              Previous card
-            </button>
-            <button
-              onClick={this.nextCard}
-              disabled={currentCardIndex === flashcards.length - 1}
-              className="changeCard"
-            >
-              Next card
-            </button>
+  const previousCard = () => {
+    let currentCard = visibleCardIndex;
+    setVisibleCardIndex(currentCard - 1);
+  };
+
+  // const handleFilter = e => {
+  //   setFilter(e.target.value);
+  // };
+
+  const allCards = cards.map(card => (
+    <Card
+      key={card._id}
+      card={card}
+      deleteFromDatabase={deleteFromDatabase}
+      // handleArrowKeys={handleArrowKeys}
+    />
+  ));
+
+  const visibleCard = allCards[visibleCardIndex];
+
+  return (
+    <div className="App">
+      <header>
+        <h1>Flashcards</h1>
+        {/* <Filter handleFilter={handleFilter} currentFilter={filter} /> */}
+        {modalIsOpen && (
+          <div className="modalContainer">
+            <div className="modal">
+              <Button buttonStyle="close" click={toggleModal} name="&times;" />
+              <Form
+                handleFormChange={handleFormChange}
+                handleFormSubmit={handleFormSubmit}
+              />
+            </div>
           </div>
-        </header>
-        <main className="cardContainer">
-          {flashcards.map(
-            flashcard =>
-              currentCard._id === flashcard._id && (
-                <Card
-                  key={flashcard._id}
-                  flashcard={flashcard}
-                  answerIsVisible={answerIsVisible}
-                  toggleAnswerReveal={this.toggleAnswerReveal}
-                  deleteFromDatabase={this.deleteFromDatabase}
-                />
-              )
-          )}
-        </main>
-        {flashcards.length !== 0 && (
-          <button className="openModal" onClick={this.toggleModal}>
-            Add Card
-          </button>
         )}
-      </div>
-    );
-  }
-}
+        <div className="buttonContainer">
+          <Button
+            click={previousCard}
+            disabled={visibleCardIndex <= 0}
+            name="Previous Card"
+            buttonStyle="changeCard"
+          />
+          <Button
+            click={nextCard}
+            disabled={visibleCardIndex === cards.length - 1}
+            name="Next Card"
+            buttonStyle="changeCard"
+          />
+        </div>
+      </header>
+      <main className="cardContainer">{visibleCard}</main>
+      {cards.length !== 0 && (
+        <Button click={toggleModal} name="Add Card" buttonStyle="openModal" />
+      )}
+    </div>
+  );
+};
 
 export default App;
