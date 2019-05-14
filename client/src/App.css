@@ -202,15 +202,12 @@ header {
 
 /* CARD STYLES */
 
-<<<<<<< HEAD
-=======
 .cardContainer {
   display: flex;
   justify-content: center;
   position: relative;
 }
 
->>>>>>> 30b8a5f508fc976750f5f66990c60c99b144cd23
 .card {
   border: 1px solid black;
   padding: 15px;
@@ -222,19 +219,9 @@ header {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-<<<<<<< HEAD
-  max-width: 500px;
-  width: 90%;
-  margin: 30px auto;
-}
-
-.card p {
-  margin: 10px 0 20px 0;
-=======
   flex: 0 1 450px;
   min-height: 300px;
   box-shadow: 4px 3px 0 #f4fdd971;
->>>>>>> 30b8a5f508fc976750f5f66990c60c99b144cd23
 }
 
 /* .card:before {

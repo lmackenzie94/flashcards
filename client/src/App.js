@@ -100,6 +100,13 @@ class App extends Component {
     }));
   };
 
+  // handleFilter = topic => {
+  //   const newState = this.state.flashcards.filter(
+  //     flashcard => flashcard.topic === topic
+  //   );
+  //   this.setState({ flashcards: newState });
+  // };
+
   render() {
     const {
       flashcards,
@@ -109,13 +116,23 @@ class App extends Component {
       currentCard,
       currentCardIndex,
       answerIsVisible,
-      modalIsOpen
+      modalIsOpen,
+      currentFilter
     } = this.state;
 
     return (
       <div className="App">
         <header>
           <h1>Flashcards</h1>
+          <select
+            onChange={this.handleFormChange}
+            name="currentFilter"
+            value={currentFilter}
+          >
+            <option value="HTML">HTML</option>
+            <option value="CSS">CSS</option>
+            <option value="JavaScript">JavaScript</option>
+          </select>
           {modalIsOpen && (
             <Modal
               handleFormChange={this.handleFormChange}
