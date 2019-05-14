@@ -15,7 +15,7 @@ const App = props => {
   });
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [visibleCardIndex, setVisibleCardIndex] = useState(0);
-  // const [filter, setFilter] = useState(undefined);
+  const [filter, setFilter] = useState("noFilter");
 
   useEffect(() => {
     getFromDatabase();
@@ -86,18 +86,22 @@ const App = props => {
     setVisibleCardIndex(currentCard - 1);
   };
 
-  // const handleFilter = e => {
-  //   setFilter(e.target.value);
-  // };
+  const handleFilter = e => {
+    let filter = e.target.value;
+    setFilter(filter);
+    setVisibleCardIndex(0);
+  };
 
-  const allCards = cards.map(card => (
-    <Card
-      key={card._id}
-      card={card}
-      deleteFromDatabase={deleteFromDatabase}
-      // handleArrowKeys={handleArrowKeys}
-    />
-  ));
+  const allCards = cards
+    .filter(card => (filter !== "noFilter" ? card.topic === filter : card))
+    .map(card => (
+      <Card
+        key={card._id}
+        card={card}
+        deleteFromDatabase={deleteFromDatabase}
+        // handleArrowKeys={handleArrowKeys}
+      />
+    ));
 
   const visibleCard = allCards[visibleCardIndex];
 
@@ -105,7 +109,7 @@ const App = props => {
     <div className="App">
       <header>
         <h1>Flashcards</h1>
-        {/* <Filter handleFilter={handleFilter} currentFilter={filter} /> */}
+        <Filter handleFilter={handleFilter} currentFilter={filter} />
         {modalIsOpen && (
           <div className="modalContainer">
             <div className="modal">
@@ -126,7 +130,7 @@ const App = props => {
           />
           <Button
             click={nextCard}
-            disabled={visibleCardIndex === cards.length - 1}
+            disabled={visibleCardIndex === allCards.length - 1}
             name="Next Card"
             buttonStyle="changeCard"
           />

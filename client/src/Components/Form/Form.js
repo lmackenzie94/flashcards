@@ -21,7 +21,7 @@ const Form = props => {
           onChange={handleFormChange}
           required
         />
-        <select required name="newCardTopic" onChange={handleFormChange}>
+        <select required name="newTopic" onChange={handleFormChange}>
           <option value="HTML" defaultValue>
             HTML
           </option>

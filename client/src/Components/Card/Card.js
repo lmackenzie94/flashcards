@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useSpring, animated } from "react-spring";
 
 const Card = props => {
-  const { deleteFromDatabase } = props;
-  const { _id, question, answer, topic } = props.card;
   const [answerIsVisible, setAnswerIsVisible] = useState(false);
+
+  const { _id, question, answer, topic } = props.card;
   const cardTransition = useSpring({ opacity: 1, from: { opacity: 0 } });
 
   const topicBadge = (
@@ -35,7 +35,7 @@ const Card = props => {
       // tabIndex="0"
       // onKeyDown={handleArrowKeys}
     >
-      <button className="close" onClick={() => deleteFromDatabase(_id)}>
+      <button className="close" onClick={() => props.deleteFromDatabase(_id)}>
         &times;
       </button>
       {topicBadge}
