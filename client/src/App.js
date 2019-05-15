@@ -108,7 +108,7 @@ const App = props => {
   return (
     <div className="App">
       <header>
-        <h1>Flashcards</h1>
+        <h1>CodeCards</h1>
         <Filter handleFilter={handleFilter} currentFilter={filter} />
         {modalIsOpen && (
           <div className="modalContainer">

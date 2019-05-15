@@ -18,11 +18,10 @@ const Card = props => {
     let keyPressed = e.key;
     if (keyPressed === "ArrowLeft" && visibleCardIndex > 0) {
       previousCard();
-    }
-    if (keyPressed === "ArrowRight") {
+    } else if (keyPressed === "ArrowRight") {
       //need to block arrow press when there are no more cards to show
       nextCard();
-    }
+    } else return;
   };
 
   const topicBadge = (
