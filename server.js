@@ -3,6 +3,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser"); // body-parser extracts the entire body portion of an incoming request stream and exposes it on req.body
+const path = require("path"); // don't need to get from npm
 
 const cards = require("./routes/api/cards");
 
@@ -22,6 +23,16 @@ mongoose
 // Use Routes
 app.use("/api/cards", cards);
 // any request to /api/cards will refer to the cards variable above, which refers to the routes directory
+
+// Serve static assets (build folder) if we're in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+  // Load html file for any requests that aren't to the API
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 const port = process.env.PORT || 3001; //need process.env for eventual deployment to heroku
 
