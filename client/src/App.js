@@ -72,10 +72,6 @@ const App = props => {
     setModalIsOpen(!modalIsOpen);
   };
 
-  // const handleArrowKeys = e => {
-  //   let keyPressed = e.key;
-  // };
-
   const nextCard = () => {
     let currentCard = visibleCardIndex;
     setVisibleCardIndex(currentCard + 1);
@@ -99,9 +95,13 @@ const App = props => {
         key={card._id}
         card={card}
         deleteFromDatabase={deleteFromDatabase}
-        // handleArrowKeys={handleArrowKeys}
+        nextCard={nextCard}
+        previousCard={previousCard}
+        visibleCardIndex={visibleCardIndex}
       />
     ));
+
+  // should probably make filter update cards state
 
   const visibleCard = allCards[visibleCardIndex];
 
