@@ -28,7 +28,11 @@ const Card = props => {
     <span className={`topic ${topic.toLowerCase()}`}>{topic}</span>
   );
 
-  const questionText = <p style={{ fontWeight: "Bold" }}>{question}</p>;
+  const questionText = (
+    <p style={{ fontWeight: "Bold", marginTop: "25px", textAlign: "center" }}>
+      {question}
+    </p>
+  );
   const answerText = answerIsVisible ? (
     <p>{answer}</p>
   ) : (

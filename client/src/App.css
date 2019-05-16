@@ -169,7 +169,7 @@ html {
 }
 
 body {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-family: "Montserrat", sans-serif;
   line-height: 1.5;
   letter-spacing: 0.05rem;
@@ -223,33 +223,12 @@ header {
   flex: 0 1 450px;
   min-height: 300px;
   box-shadow: 4px 3px 0 #f4fdd971;
+  max-width: 450px;
 }
 
-/* .card:before {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: #f3f8e5;
-  position: absolute;
-  top: 3px;
-  right: -6px;
-  z-index: -1;
-  border: 2px solid black;
-} */
-
-/* .card:after {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: #f3f8e5;
-  position: absolute;
-  top: 4px;
-  right: -7px;
-  z-index: -2;
-  border: 2px solid black;
-} */
+.card p {
+  text-align: center;
+}
 
 .topic {
   position: absolute;
@@ -287,12 +266,6 @@ form {
   align-items: center;
   margin: 20px auto;
 }
-
-/* prevents outline around input after form submission */
-/* *:required {
-  border: none;
-  box-shadow: none;
-} */
 
 form input[type="text"] {
   background: none;
