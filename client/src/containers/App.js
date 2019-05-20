@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
-import Card from "./Components/Card/Card";
-import Form from "./Components/Form/Form";
-import Filter from "./Components/Filter/Filter";
-import Button from "./Components/Button/Button";
+import Filter from "../components/Filter/Filter";
+import Button from "../components/Button/Button";
+import Cards from "../components/Cards/Cards";
+import Modal from "../components/Modal/Modal";
 
 const App = props => {
   const [cards, setCards] = useState([]);
@@ -47,7 +47,8 @@ const App = props => {
           newTopic: "HTML"
         });
         setVisibleCardIndex(0); //so that the new card is the one that's visible
-      });
+      })
+      .catch(err => console.log(`Oops, something went wrong: ${err}`));
   };
 
   const deleteFromDatabase = id => {
@@ -88,39 +89,17 @@ const App = props => {
     setVisibleCardIndex(0);
   };
 
-  const allCards = cards
-    .filter(card => (filter !== "noFilter" ? card.topic === filter : card))
-    .map(card => (
-      <Card
-        key={card._id}
-        card={card}
-        deleteFromDatabase={deleteFromDatabase}
-        nextCard={nextCard}
-        previousCard={previousCard}
-        visibleCardIndex={visibleCardIndex}
-      />
-    ));
-
-  // should probably make filter update cards state
-
-  const visibleCard = allCards[visibleCardIndex];
-
   return (
     <div className="App">
       <header>
         <h1>CodeCards</h1>
         <Filter handleFilter={handleFilter} currentFilter={filter} />
-        {modalIsOpen && (
-          <div className="modalContainer">
-            <div className="modal">
-              <Button buttonStyle="close" click={toggleModal} name="&times;" />
-              <Form
-                handleFormChange={handleFormChange}
-                handleFormSubmit={handleFormSubmit}
-              />
-            </div>
-          </div>
-        )}
+        <Modal
+          toggleModal={toggleModal}
+          handleFormChange={handleFormChange}
+          handleFormSubmit={handleFormSubmit}
+          modalIsOpen={modalIsOpen}
+        />
         <div className="buttonContainer">
           <Button
             click={previousCard}
@@ -130,13 +109,20 @@ const App = props => {
           />
           <Button
             click={nextCard}
-            disabled={visibleCardIndex === allCards.length - 1}
+            // disabled={visibleCardIndex === allCards.length - 1}
             name="Next Card"
             buttonStyle="changeCard"
           />
         </div>
       </header>
-      <main className="cardContainer">{visibleCard}</main>
+      <Cards
+        deleteFromDatabase={deleteFromDatabase}
+        nextCard={nextCard}
+        previousCard={previousCard}
+        visibleCardIndex={visibleCardIndex}
+        cards={cards}
+        filter={filter}
+      />
       {cards.length !== 0 && (
         <Button click={toggleModal} name="Add Card" buttonStyle="openModal" />
       )}

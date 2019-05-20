@@ -1,5 +1,4 @@
 import React from "react";
-import "../../App.css";
 
 const Form = props => {
   const { handleFormChange, handleFormSubmit } = props;
