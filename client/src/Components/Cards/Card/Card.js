@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useSpring, animated } from "react-spring";
 
 const Card = props => {
@@ -65,4 +66,13 @@ const Card = props => {
     </animated.div>
   );
 };
+
+Card.propTypes = {
+  nextCard: PropTypes.func,
+  previousCard: PropTypes.func,
+  visibleCardIndex: PropTypes.number,
+  deleteFromDatabase: PropTypes.func,
+  card: PropTypes.object
+};
+
 export default Card;
