@@ -1,69 +1,69 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./App.css";
-import Filter from "../components/Filter/Filter";
-import Button from "../components/Button/Button";
-import Cards from "../components/Cards/Cards";
-import Modal from "../components/Modal/Modal";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './App.css';
+import Filter from '../Components/Filter/Filter';
+import Button from '../Components/Button/Button';
+import Cards from '../Components/Cards/Cards';
+import Modal from '../Components/Modal/Modal';
 
-const App = props => {
+const App = () => {
   const [cards, setCards] = useState([]);
   const [newCard, setNewCard] = useState({
-    newQuestion: "",
-    newAnswer: "",
-    newTopic: "HTML"
+    newQuestion: '',
+    newAnswer: '',
+    newTopic: 'HTML',
   });
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [visibleCardIndex, setVisibleCardIndex] = useState(0);
-  const [filter, setFilter] = useState("noFilter");
+  const [filter, setFilter] = useState('noFilter');
 
   useEffect(() => {
     getFromDatabase();
   }, []);
 
   const getFromDatabase = () => {
-    fetch("/api/cards") // dont have to specify localhost becuase of the proxy we added in package.json
-      .then(res => res.json())
-      .then(cards => {
+    fetch('/api/cards') // dont have to specify localhost becuase of the proxy we added in package.json
+      .then((res) => res.json())
+      .then((cards) => {
         const reversedCards = cards.reverse(); // so more recently added cards appear first
         setCards(reversedCards);
       })
-      .catch(err => console.log(`Oops, something went wrong: ${err}`));
+      .catch((err) => console.log(`Oops, something went wrong: ${err}`));
   };
 
   const postToDatabase = () => {
     let { newQuestion, newAnswer, newTopic } = newCard;
     axios
-      .post("/api/cards", {
+      .post('/api/cards', {
         question: newQuestion,
         answer: newAnswer,
-        topic: newTopic
+        topic: newTopic,
       })
       .then(() => {
         getFromDatabase();
         setNewCard({
-          newQuestion: "",
-          newAnswer: "",
-          newTopic: "HTML"
+          newQuestion: '',
+          newAnswer: '',
+          newTopic: 'HTML',
         });
         setVisibleCardIndex(0); //so that the new card is the one that's visible
       })
-      .catch(err => console.log(`Oops, something went wrong: ${err}`));
+      .catch((err) => console.log(`Oops, something went wrong: ${err}`));
   };
 
-  const deleteFromDatabase = id => {
+  const deleteFromDatabase = (id) => {
     axios.delete(`/api/cards/${id}`).then(() => getFromDatabase());
   };
 
-  const handleFormChange = e => {
+  const handleFormChange = (e) => {
     let currentInput = e.target.name;
     setNewCard({
       ...newCard,
-      [currentInput]: e.target.value
+      [currentInput]: e.target.value,
     });
   };
 
-  const handleFormSubmit = e => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     postToDatabase();
     toggleModal();
@@ -83,7 +83,7 @@ const App = props => {
     setVisibleCardIndex(currentCard - 1);
   };
 
-  const handleFilter = e => {
+  const handleFilter = (e) => {
     let filter = e.target.value;
     setFilter(filter);
     setVisibleCardIndex(0);
